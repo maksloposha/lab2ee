@@ -20,28 +20,6 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * REST resource for Order.
- * <p>
- * Base path: /api/orders
- * <p>
- * ┌──────────────────────────────────────────────────────────────────────────┐
- * │ Method │ Path                       │ Description                        │
- * ├──────────────────────────────────────────────────────────────────────────┤
- * │ GET    │ /api/orders                │ List all (filter + pagination)      │
- * │ GET    │ /api/orders/{id}           │ Get single order                   │
- * │ POST   │ /api/orders                │ Create order (validated)   [CRUD C]│
- * │ PUT    │ /api/orders/{id}           │ Full replace               [CRUD U]│
- * │ PATCH  │ /api/orders/{id}/status    │ Update status only                 │
- * │ DELETE │ /api/orders/{id}           │ Cancel/delete order        [CRUD D]│
- * └──────────────────────────────────────────────────────────────────────────┘
- * <p>
- * Filtering (GET /api/orders):
- * ?status=PENDING        — filter by status
- * ?customerName=Олена    — filter by customer name (partial, case-insensitive)
- * ?page=1&pageSize=5     — pagination
- * ?sortBy=createdAt&sortDir=desc
- */
 @Path("/orders")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

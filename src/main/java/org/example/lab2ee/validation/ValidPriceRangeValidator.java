@@ -6,12 +6,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
-/**
- * Class-level validator for @ValidPriceRange.
- * <p>
- * Business rule: якщо calories > 0, то ціна теж має бути > 0.
- * Демонструє крос-польову (cross-field) валідацію на рівні об'єкта.
- */
 public class ValidPriceRangeValidator implements ConstraintValidator<ValidPriceRange, Object> {
 
     private String priceFieldName;

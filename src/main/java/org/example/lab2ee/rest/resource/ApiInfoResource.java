@@ -12,10 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * GET /api  →  Returns API meta-information and list of available endpoints.
- * Useful as a "health check" and discovery endpoint.
- */
+
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class ApiInfoResource {

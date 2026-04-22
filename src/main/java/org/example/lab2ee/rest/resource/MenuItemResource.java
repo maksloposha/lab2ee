@@ -20,30 +20,6 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * REST resource for MenuItem.
- * <p>
- * Base path: /api/menu-items
- * <p>
- * ┌──────────────────────────────────────────────────────────────────────┐
- * │ Method  │ Path                    │ Description                      │
- * ├──────────────────────────────────────────────────────────────────────┤
- * │ GET     │ /api/menu-items         │ List all (filter + pagination)   │
- * │ GET     │ /api/menu-items/{id}    │ Get single item                  │
- * │ POST    │ /api/menu-items         │ Create new item          [CRUD C]│
- * │ PUT     │ /api/menu-items/{id}    │ Full update              [CRUD U]│
- * │ PATCH   │ /api/menu-items/{id}/availability │ Toggle availability   │
- * │ DELETE  │ /api/menu-items/{id}    │ Delete item              [CRUD D]│
- * │ GET     │ /api/menu-items/categories │ List all categories          │
- * └──────────────────────────────────────────────────────────────────────┘
- * <p>
- * Filtering params (GET /api/menu-items):
- * ?category=MAIN_COURSE   — filter by category
- * ?available=true         — only available items
- * ?search=паста           — name/description contains (case-insensitive)
- * ?page=1&pageSize=5      — pagination
- * ?sortBy=price&sortDir=asc — sorting
- */
 @Path("/menu-items")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
