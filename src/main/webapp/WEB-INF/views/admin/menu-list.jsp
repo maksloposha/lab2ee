@@ -18,7 +18,7 @@
 <div class="admin-layout">
     <aside class="admin-sidebar">
         <div class="sidebar-head">Панель адміністратора</div>
-        <a href="${pageContext.request.contextPath}/admin/menu"   class="active">Елементи меню</a>
+        <a href="${pageContext.request.contextPath}/admin/menu" class="active">Елементи меню</a>
         <a href="${pageContext.request.contextPath}/admin/menu/new">Додати страву</a>
         <a href="${pageContext.request.contextPath}/admin/orders">Замовлення</a>
     </aside>
@@ -30,9 +30,9 @@
                 <c:if test="${item.category==cat}"><c:set var="hasItems" value="true"/></c:if>
             </c:forEach>
             <c:if test="${hasItems}">
-                <div class="card" style="margin-bottom:1.75rem;overflow:hidden;">
-                    <div style="background:var(--warm);padding:.7rem 1.1rem;border-bottom:1px solid var(--border);">
-                        <strong style="font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--brown);">${cat.displayName}</strong>
+                <div class="card card-mb">
+                    <div class="card-cat-header">
+                        <strong class="cat-title">${cat.displayName}</strong>
                     </div>
                     <table>
                         <thead>
@@ -42,9 +42,9 @@
                             <c:forEach var="item" items="${menuItems}">
                                 <c:if test="${item.category==cat}">
                                     <tr>
-                                        <td class="text-muted" style="font-size:.82rem;">#${item.id}</td>
+                                        <td class="text-muted cell-id">#${item.id}</td>
                                         <td class="fw-bold"><c:out value="${item.name}"/></td>
-                                        <td style="max-width:220px;font-size:.82rem;" class="text-muted"><c:out value="${item.description}"/></td>
+                                        <td class="text-muted cell-desc"><c:out value="${item.description}"/></td>
                                         <td class="fw-bold text-accent"><fmt:formatNumber value="${item.price}" pattern="#,##0.00"/>&nbsp;&#8372;</td>
                                         <td>${item.calories}</td>
                                         <td>
@@ -52,7 +52,7 @@
                                             <c:if test="${!item.available}"><span class="unavailable">Недоступно</span></c:if>
                                         </td>
                                         <td>
-                                            <div style="display:flex;gap:.35rem;">
+                                            <div class="cell-actions">
                                                 <a href="${pageContext.request.contextPath}/admin/menu/edit?id=${item.id}" class="btn btn-outline btn-sm">Редагувати</a>
                                                 <form method="post" action="${pageContext.request.contextPath}/admin/menu/delete"
                                                       onsubmit="return confirm('Видалити страву «${item.name}»?')">
