@@ -1,5 +1,6 @@
 package org.example.lab2ee.controller;
 
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,22 +15,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * GET  /my-orders         — список замовлень поточного користувача
- * POST /my-orders/cancel  — скасування замовлення
- * <p>
- * "Поточний користувач" ідентифікується за іменем/телефоном із сесії.
- * В ЛР 4 (DAO) це буде замінено на userId.
- */
+
 @WebServlet("/my-orders/*")
 public class MyOrdersServlet extends HttpServlet {
 
+    @EJB
     private OrderService orderService;
 
-    @Override
-    public void init() {
-        orderService = ServiceFactory.getOrderService();
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -37,7 +29,6 @@ public class MyOrdersServlet extends HttpServlet {
 
         User user = (User) req.getSession().getAttribute(AuthServlet.SESSION_USER_KEY);
 
-        // Фільтруємо замовлення за іменем користувача (заглушка — в ЛР4 буде userId)
         List<Order> myOrders = orderService.getAllOrders().stream()
                 .filter(o -> user.getFullName().equals(o.getCustomerName()))
                 .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))

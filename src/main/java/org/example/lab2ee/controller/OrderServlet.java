@@ -1,5 +1,6 @@
 package org.example.lab2ee.controller;
 
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,14 +23,11 @@ import java.util.Optional;
 public class OrderServlet extends HttpServlet {
 
     private static final String CART_KEY = "cart";
+    @EJB
     private MenuService menuService;
+    @EJB
     private OrderService orderService;
 
-    @Override
-    public void init() {
-        menuService = ServiceFactory.getMenuService();
-        orderService = ServiceFactory.getOrderService();
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

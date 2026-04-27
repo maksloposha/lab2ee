@@ -1,5 +1,6 @@
 package org.example.lab2ee.rest.resource;
 
+import jakarta.ejb.EJB;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -25,7 +26,8 @@ import java.util.stream.Collectors;
 @Consumes(MediaType.APPLICATION_JSON)
 public class MenuItemResource {
 
-    private final MenuService menuService = ServiceFactory.getMenuService();
+    @EJB
+    private MenuService menuService;
 
     // ── READ all (with filter + pagination) ───────────────────────────────────
 

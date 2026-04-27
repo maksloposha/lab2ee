@@ -9,17 +9,7 @@ import org.example.lab2ee.model.User;
 
 import java.io.IOException;
 
-/**
- * Servlet Filter that enforces authentication and role-based access control.
- * <p>
- * Rules:
- * /admin/*  → requires Role.ADMIN   (others get 403)
- * /order/*  → requires any login    (guests redirected to /login)
- * /menu     → public
- * /         → public
- * /login    → public (but redirect logged-in users)
- * /api/*    → handled separately (no session auth for REST)
- */
+
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 

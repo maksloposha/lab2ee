@@ -1,10 +1,12 @@
 package org.example.lab2ee.service;
 
+import jakarta.ejb.Local;
 import org.example.lab2ee.model.MenuItem;
 
 import java.util.List;
 import java.util.Optional;
 
+@Local
 public interface MenuService {
     List<MenuItem> getAllMenuItems();
 

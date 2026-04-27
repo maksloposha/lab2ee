@@ -33,7 +33,6 @@ public class UserServiceStub implements UserService {
         User user = USERS.get(username.trim());
         if (user == null) return Optional.empty();
         String stored = PASSWORDS.get(username.trim());
-        // In production: BCrypt.checkpw(password, storedHash)
         if (!password.equals(stored)) return Optional.empty();
         return Optional.of(user);
     }

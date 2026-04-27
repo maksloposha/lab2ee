@@ -1,5 +1,6 @@
 package org.example.lab2ee.controller;
 
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,12 +17,8 @@ import java.util.Optional;
 @WebServlet("/admin/orders/*")
 public class AdminOrderServlet extends HttpServlet {
 
+    @EJB
     private OrderService orderService;
-
-    @Override
-    public void init() {
-        orderService = ServiceFactory.getOrderService();
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

@@ -1,5 +1,6 @@
 package org.example.lab2ee.rest.resource;
 
+import jakarta.ejb.EJB;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -25,8 +26,10 @@ import java.util.stream.Collectors;
 @Consumes(MediaType.APPLICATION_JSON)
 public class OrderResource {
 
-    private final OrderService orderService = ServiceFactory.getOrderService();
-    private final MenuService menuService = ServiceFactory.getMenuService();
+    @EJB
+    private OrderService orderService;
+    @EJB
+    private MenuService menuService;
 
     // ── READ all (filter + pagination) ───────────────────────────────────────
 

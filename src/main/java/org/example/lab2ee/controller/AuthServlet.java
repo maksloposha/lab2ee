@@ -1,5 +1,6 @@
 package org.example.lab2ee.controller;
 
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,25 +14,15 @@ import org.example.lab2ee.service.UserService;
 import java.io.IOException;
 import java.util.Optional;
 
-/**
- * Handles login (GET /login → form, POST /login → authenticate)
- * and logout (GET /logout).
- * <p>
- * On successful login the user object is stored in the session under "currentUser".
- */
+
 @WebServlet({"/login", "/logout"})
 public class AuthServlet extends HttpServlet {
 
     public static final String SESSION_USER_KEY = "currentUser";
 
+    @EJB
     private UserService userService;
 
-    @Override
-    public void init() {
-        userService = ServiceFactory.getUserService();
-    }
-
-    // ── GET /login → show form  |  GET /logout → destroy session ─────────────
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

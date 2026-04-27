@@ -20,15 +20,6 @@
         </cookie-config>
     </session-config>
 
-    <!-- Prevent direct access to JSPs under WEB-INF -->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Protected JSPs</web-resource-name>
-            <url-pattern>/WEB-INF/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint/>
-    </security-constraint>
-
     <!-- Welcome page -->
     <welcome-file-list>
         <welcome-file/>

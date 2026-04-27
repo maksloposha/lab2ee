@@ -1,5 +1,6 @@
 package org.example.lab2ee.controller;
 
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,12 +15,9 @@ import java.util.stream.Collectors;
 @WebServlet("/")
 public class HomeServlet extends HttpServlet {
 
+    @EJB
     private MenuService menuService;
 
-    @Override
-    public void init() {
-        menuService = ServiceFactory.getMenuService();
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
