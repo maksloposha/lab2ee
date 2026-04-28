@@ -10,4 +10,7 @@ public interface UserService {
     Optional<User> authenticate(String username, String password);
 
     Optional<User> findByUsername(String username);
+
+    User register(String username, String password, String fullName,
+                  String email, String phone);
 }

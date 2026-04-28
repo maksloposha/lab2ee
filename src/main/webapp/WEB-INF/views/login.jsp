@@ -42,4 +42,6 @@
     </div>
 </div>
 
+
+            <div style="text-align:center;margin-top:1.25rem;font-size:.88rem;color:var(--muted);">Ще не маєте акаунту? <a href="${pageContext.request.contextPath}/register" style="color:var(--accent);font-weight:600;">Зареєструватись</a></div>
 <jsp:include page="footer.jsp"/>
