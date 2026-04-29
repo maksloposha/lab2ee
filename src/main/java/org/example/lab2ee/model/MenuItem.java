@@ -56,7 +56,7 @@ public class MenuItem implements Serializable {
     }
 
     public MenuItem(int id, String name, String description, BigDecimal price,
-                    Category category, boolean available, String imageUrl, int calories) {
+                    Category category, boolean available, int calories) {
         this.id = id;
         this.name = name;
         this.description = description;

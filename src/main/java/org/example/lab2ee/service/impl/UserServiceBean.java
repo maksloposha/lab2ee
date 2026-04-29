@@ -1,8 +1,8 @@
 package org.example.lab2ee.service.impl;
 
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import org.example.lab2ee.dao.UserDAO;
-import org.example.lab2ee.dao.impl.UserDAOImpl;
 import org.example.lab2ee.model.User;
 import org.example.lab2ee.service.UserService;
 
@@ -11,7 +11,8 @@ import java.util.Optional;
 @Stateless
 public class UserServiceBean implements UserService {
 
-    private final UserDAO dao = new UserDAOImpl();
+    @EJB
+    private UserDAO dao;
 
     @Override
     public Optional<User> authenticate(String username, String password) {

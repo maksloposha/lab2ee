@@ -3,7 +3,6 @@ package org.example.lab2ee.service.impl;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import org.example.lab2ee.dao.OrderDAO;
-import org.example.lab2ee.dao.impl.OrderDAOImpl;
 import org.example.lab2ee.model.Order;
 import org.example.lab2ee.model.OrderItem;
 import org.example.lab2ee.service.MenuService;
@@ -17,7 +16,8 @@ import java.util.Optional;
 @Stateless
 public class OrderServiceBean implements OrderService {
 
-    private final OrderDAO dao = new OrderDAOImpl();
+    @EJB
+    private OrderDAO dao;
 
     @EJB
     private MenuService menuService;

@@ -1,8 +1,8 @@
 package org.example.lab2ee.service.impl;
 
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import org.example.lab2ee.dao.MenuItemDAO;
-import org.example.lab2ee.dao.impl.MenuItemDAOImpl;
 import org.example.lab2ee.model.MenuItem;
 import org.example.lab2ee.service.MenuService;
 
@@ -15,8 +15,8 @@ import java.util.Optional;
 @Stateless
 public class MenuServiceBean implements MenuService {
 
-
-    private final MenuItemDAO dao = new MenuItemDAOImpl();
+    @EJB                              // ← було: new MenuItemDAOImpl()
+    private MenuItemDAO dao;
 
     @Override
     public List<MenuItem> getAllMenuItems() {
