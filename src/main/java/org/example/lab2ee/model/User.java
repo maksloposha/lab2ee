@@ -3,12 +3,22 @@ package org.example.lab2ee.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
     public enum Role {
         USER("User"), ADMIN("Admin");
@@ -45,6 +55,9 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Order> orders = new ArrayList<>();
 
     public User() {
     }

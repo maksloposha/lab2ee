@@ -14,6 +14,14 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public enum Status {
         PENDING("Очікує"), CONFIRMED("Підтверджено"), PREPARING("Готується"),
         READY("Готово"), DELIVERED("Доставлено"), CANCELLED("Скасовано");
@@ -32,6 +40,10 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "customer_name" , nullable = false, length = 100)
     private String customerName;

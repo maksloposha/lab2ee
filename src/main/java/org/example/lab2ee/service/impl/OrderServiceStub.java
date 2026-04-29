@@ -2,6 +2,7 @@ package org.example.lab2ee.service.impl;
 
 import org.example.lab2ee.model.Order;
 import org.example.lab2ee.model.OrderItem;
+import org.example.lab2ee.model.User;
 import org.example.lab2ee.service.OrderService;
 
 import java.time.LocalDateTime;
@@ -68,12 +69,10 @@ public class OrderServiceStub implements OrderService {
     }
 
     @Override
-    public Order createOrder(Order order) {
-        int newId = idCounter.incrementAndGet();
-        order.setId(newId);
-        orders.put(newId, order);
-        return order;
+    public Order createOrder(Order order, User user) {
+        return null;
     }
+
 
     @Override
     public Order updateOrderStatus(int orderId, Order.Status newStatus) {
@@ -94,5 +93,10 @@ public class OrderServiceStub implements OrderService {
     @Override
     public Order validateOrderForReview(int orderId, int userId) {
         return null;
+    }
+
+    @Override
+    public List<Order> getOrdersByUser(int userId) {
+        return List.of();
     }
 }

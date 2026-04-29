@@ -6,6 +6,7 @@ import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import org.example.lab2ee.dao.OrderDAO;
 import org.example.lab2ee.model.Order;
+import org.example.lab2ee.model.User;
 import org.example.lab2ee.service.OrderItemService;
 import org.example.lab2ee.service.OrderService;
 
@@ -43,7 +44,7 @@ public class OrderServiceBean implements OrderService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order, User user) {
         // Базова валідація
         if (order.getItems() == null || order.getItems().isEmpty())
             throw new IllegalArgumentException(
@@ -54,6 +55,7 @@ public class OrderServiceBean implements OrderService {
             throw new IllegalArgumentException("Адреса доставки є обов'язковою");
 
         order.setStatus(Order.Status.PENDING);
+        order.setUser(user);
 
         Order savedOrder = orderDAO.saveOrderOnly(order);
         orderItemService.saveItems(savedOrder, order.getItems());
@@ -98,5 +100,11 @@ public class OrderServiceBean implements OrderService {
                     "Відгук можна залишити лише на доставлене замовлення. " +
                             "Поточний статус: " + order.getStatus().getDisplayName());
         return order;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public List<Order> getOrdersByUser(int userId) {
+        return orderDAO.findByUserId(userId);
     }
 }

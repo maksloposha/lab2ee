@@ -29,10 +29,7 @@ public class MyOrdersServlet extends HttpServlet {
 
         User user = (User) req.getSession().getAttribute(AuthServlet.SESSION_USER_KEY);
 
-        List<Order> myOrders = orderService.getAllOrders().stream()
-                .filter(o -> user.getFullName().equals(o.getCustomerName()))
-                .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
-                .collect(Collectors.toList());
+        List<Order> myOrders = orderService.getOrdersByUser(user.getId());
 
         req.setAttribute("myOrders", myOrders);
         req.getRequestDispatcher("/WEB-INF/views/user/my-orders.jsp")

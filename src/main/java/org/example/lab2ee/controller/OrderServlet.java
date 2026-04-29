@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.lab2ee.model.MenuItem;
 import org.example.lab2ee.model.Order;
 import org.example.lab2ee.model.OrderItem;
+import org.example.lab2ee.model.User;
 import org.example.lab2ee.service.MenuService;
 import org.example.lab2ee.service.OrderService;
 import org.example.lab2ee.service.ServiceFactory;
@@ -146,6 +147,8 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
+        User user = (User) req.getSession().getAttribute(AuthServlet.SESSION_USER_KEY);
+
         Order order = new Order();
         order.setCustomerName(name);
         order.setCustomerPhone(phone);
@@ -153,10 +156,16 @@ public class OrderServlet extends HttpServlet {
         order.setNotes(notes);
         order.setItems(new ArrayList<>(cart));
 
-        Order saved = orderService.createOrder(order);
-        req.getSession().removeAttribute(CART_KEY);
-        req.getSession().setAttribute("lastOrderId", saved.getId());
-        resp.sendRedirect(req.getContextPath() + "/order/confirmation");
+        try {
+            Order saved = orderService.createOrder(order, user);
+            req.getSession().removeAttribute(CART_KEY);
+            req.getSession().setAttribute("lastOrderId", saved.getId());
+            resp.sendRedirect(req.getContextPath() + "/order/confirmation");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            req.setAttribute("cart", cart);
+            req.setAttribute("error", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/user/checkout.jsp").forward(req, resp);
+        }
     }
 
     @SuppressWarnings("unchecked")

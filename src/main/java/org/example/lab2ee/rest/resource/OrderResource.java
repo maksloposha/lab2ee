@@ -167,7 +167,7 @@ public class OrderResource {
             return Response.status(422).entity(err).build();
         }
 
-        Order saved = orderService.createOrder(order);
+        Order saved = orderService.createOrder(order, null);
         URI location = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(saved.getId()))
                 .build();

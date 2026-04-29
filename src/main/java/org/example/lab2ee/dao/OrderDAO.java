@@ -25,4 +25,6 @@ public interface OrderDAO {
     boolean delete(int id);
 
     Order saveOrderOnly(Order order);
+
+    List<Order>     findByUserId(int userId);
 }

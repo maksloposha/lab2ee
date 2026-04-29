@@ -89,4 +89,14 @@ public class OrderDAOImpl implements OrderDAO {
         order.setItems(items);
         return order;
     }
+
+    @Override
+    public List<Order> findByUserId(int userId) {
+        return em.createQuery(
+                        "SELECT o FROM Order o WHERE o.user.id = :userId ORDER BY o.createdAt DESC",
+                        Order.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
+
 }
