@@ -30,7 +30,7 @@ public class MenuItem implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // SERIAL в PostgreSQL
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false, length = 100)
@@ -51,6 +51,12 @@ public class MenuItem implements Serializable {
 
     @Column(nullable = false)
     private int calories;
+
+    @Column(precision = 3, scale = 2)
+    private BigDecimal rating = BigDecimal.ZERO;
+
+    @Column(name = "rating_count")
+    private int ratingCount = 0;
 
     public MenuItem() {
     }

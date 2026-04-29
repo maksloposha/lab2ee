@@ -13,6 +13,7 @@
         <class>org.example.lab2ee.model.Order</class>
         <class>org.example.lab2ee.model.OrderItem</class>
         <class>org.example.lab2ee.model.User</class>
+        <class>org.example.lab2ee.model.Review</class>
 
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action"

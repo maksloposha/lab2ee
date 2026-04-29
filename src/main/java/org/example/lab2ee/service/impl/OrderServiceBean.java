@@ -2,10 +2,11 @@ package org.example.lab2ee.service.impl;
 
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import org.example.lab2ee.dao.OrderDAO;
 import org.example.lab2ee.model.Order;
-import org.example.lab2ee.model.OrderItem;
-import org.example.lab2ee.service.MenuService;
+import org.example.lab2ee.service.OrderItemService;
 import org.example.lab2ee.service.OrderService;
 
 import java.util.List;
@@ -16,81 +17,86 @@ import java.util.Optional;
 @Stateless
 public class OrderServiceBean implements OrderService {
 
-    @EJB
-    private OrderDAO dao;
+    @EJB private OrderDAO         orderDAO;
 
-    @EJB
-    private MenuService menuService;
+
+    @EJB private OrderItemService orderItemService;
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<Order> getAllOrders() {
-        return dao.findAll();
+        return orderDAO.findAll();
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<Order> getOrdersByStatus(Order.Status status) {
-        return dao.findByStatus(status);
-    }
-
-    public List<Order> findByCustomerName(String name) {
-        return dao.findByCustomerName(name);
+        return orderDAO.findByStatus(status);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Optional<Order> getOrderById(int id) {
-        return dao.findById(id);
+        return orderDAO.findById(id);
     }
 
+
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Order createOrder(Order order) {
-        if (order.getItems() == null || order.getItems().isEmpty()) {
-            throw new IllegalArgumentException("Замовлення має містити хоча б одну позицію");
-        }
-        for (OrderItem item : order.getItems()) {
-            menuService.getMenuItemById(item.getMenuItem().getId())
-                    .orElseThrow(() -> new NoSuchElementException(
-                            "Страва з ID " + item.getMenuItem().getId() + " не знайдена"));
-            if (!item.getMenuItem().isAvailable()) {
-                throw new IllegalStateException(
-                        "Страва '" + item.getMenuItem().getName() + "' недоступна для замовлення");
-            }
-            if (item.getQuantity() < 1 || item.getQuantity() > 50) {
-                throw new IllegalArgumentException("Кількість страви має бути від 1 до 50");
-            }
-        }
-        if (order.getCustomerName() == null || order.getCustomerName().isBlank()) {
+        // Базова валідація
+        if (order.getItems() == null || order.getItems().isEmpty())
+            throw new IllegalArgumentException(
+                    "Замовлення має містити хоча б одну позицію");
+        if (order.getCustomerName() == null || order.getCustomerName().isBlank())
             throw new IllegalArgumentException("Ім'я замовника є обов'язковим");
-        }
-        if (order.getDeliveryAddress() == null || order.getDeliveryAddress().isBlank()) {
+        if (order.getDeliveryAddress() == null || order.getDeliveryAddress().isBlank())
             throw new IllegalArgumentException("Адреса доставки є обов'язковою");
-        }
 
         order.setStatus(Order.Status.PENDING);
-        return dao.save(order);
+
+        Order savedOrder = orderDAO.saveOrderOnly(order);
+        orderItemService.saveItems(savedOrder, order.getItems());
+
+        return savedOrder;
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Order updateOrderStatus(int orderId, Order.Status newStatus) {
-        Order order = dao.findById(orderId).orElseThrow(() ->
-                new NoSuchElementException("Замовлення з ID " + orderId + " не знайдено"));
-
-        if (order.getStatus() == Order.Status.DELIVERED) {
-            throw new IllegalStateException("Неможливо змінити статус доставленого замовлення");
-        }
-        if (order.getStatus() == Order.Status.CANCELLED) {
-            throw new IllegalStateException("Неможливо змінити статус скасованого замовлення");
-        }
-        return dao.updateStatus(orderId, newStatus);
+        Order order = orderDAO.findById(orderId).orElseThrow(() ->
+                new NoSuchElementException("Замовлення " + orderId + " не знайдено"));
+        if (order.getStatus() == Order.Status.DELIVERED)
+            throw new IllegalStateException(
+                    "Неможливо змінити статус доставленого замовлення");
+        if (order.getStatus() == Order.Status.CANCELLED)
+            throw new IllegalStateException(
+                    "Неможливо змінити статус скасованого замовлення");
+        return orderDAO.updateStatus(orderId, newStatus);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean cancelOrder(int orderId) {
-        Order order = dao.findById(orderId).orElse(null);
+        Order order = orderDAO.findById(orderId).orElse(null);
         if (order == null) return false;
-        if (order.getStatus() == Order.Status.DELIVERED) {
-            throw new IllegalStateException("Неможливо скасувати доставлене замовлення");
-        }
-        dao.updateStatus(orderId, Order.Status.CANCELLED);
+        if (order.getStatus() == Order.Status.DELIVERED)
+            throw new IllegalStateException(
+                    "Неможливо скасувати доставлене замовлення");
+        orderDAO.updateStatus(orderId, Order.Status.CANCELLED);
         return true;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Order validateOrderForReview(int orderId, int userId) {
+        Order order = orderDAO.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Замовлення #" + orderId + " не знайдено"));
+        if (order.getStatus() != Order.Status.DELIVERED)
+            throw new IllegalStateException(
+                    "Відгук можна залишити лише на доставлене замовлення. " +
+                            "Поточний статус: " + order.getStatus().getDisplayName());
+        return order;
     }
 }

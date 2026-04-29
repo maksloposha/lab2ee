@@ -23,4 +23,6 @@ public interface OrderDAO {
     Order updateStatus(int orderId, Order.Status newStatus);
 
     boolean delete(int id);
+
+    Order saveOrderOnly(Order order);
 }

@@ -5,7 +5,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.example.lab2ee.dao.OrderDAO;
 import org.example.lab2ee.model.Order;
+import org.example.lab2ee.model.OrderItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,5 +76,17 @@ public class OrderDAOImpl implements OrderDAO {
         if (order == null) return false;
         em.remove(order);
         return true;
+    }
+
+    @Override
+    public Order saveOrderOnly(Order order) {
+        List<OrderItem> items = new ArrayList<>(order.getItems());
+        order.getItems().clear();
+
+        em.persist(order);
+        em.flush();
+
+        order.setItems(items);
+        return order;
     }
 }

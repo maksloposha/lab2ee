@@ -71,6 +71,12 @@
                         <c:if test="${order.status.name() == 'DELIVERED' or order.status.name() == 'READY'}">
                             <span class="text-muted">Скасування неможливе</span>
                         </c:if>
+                        <c:if test="${order.status.name() == 'DELIVERED'}">
+                            <a href="${pageContext.request.contextPath}/reviews?orderId=${order.id}"
+                               class="btn btn-outline btn-sm">
+                                Відгук
+                            </a>
+                        </c:if>
                     </div>
                 </div>
             </c:forEach>

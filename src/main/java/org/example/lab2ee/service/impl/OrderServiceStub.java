@@ -90,4 +90,9 @@ public class OrderServiceStub implements OrderService {
         order.setStatus(Order.Status.CANCELLED);
         return true;
     }
+
+    @Override
+    public Order validateOrderForReview(int orderId, int userId) {
+        return null;
+    }
 }

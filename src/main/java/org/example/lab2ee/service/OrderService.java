@@ -1,6 +1,8 @@
 package org.example.lab2ee.service;
 
 import jakarta.ejb.Local;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import org.example.lab2ee.model.Order;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface OrderService {
     Order updateOrderStatus(int orderId, Order.Status newStatus);
 
     boolean cancelOrder(int orderId);
+
+    Order validateOrderForReview(int orderId, int userId);
 }
