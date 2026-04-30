@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>lab2ee</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <name>lab2ee</name>
     <packaging>war</packaging>
 

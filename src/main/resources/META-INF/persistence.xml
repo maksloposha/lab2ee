@@ -7,7 +7,7 @@
 
     <persistence-unit name="FoodOrderingPU" transaction-type="JTA">
 
-        <jta-data-source>jdbc/FoodOrderingDS</jta-data-source>
+        <jta-data-source>jdbc/FoodOrderingJPADS</jta-data-source>
 
         <class>org.example.lab2ee.model.MenuItem</class>
         <class>org.example.lab2ee.model.Order</class>
