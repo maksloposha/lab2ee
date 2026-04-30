@@ -11,6 +11,22 @@ public class MenuItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public BigDecimal getRating() {
+        return rating;
+    }
+
+    public void setRating(BigDecimal rating) {
+        this.rating = rating;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
     public enum Category {
         STARTERS("Закуски"),
         SOUPS("Супи"),
