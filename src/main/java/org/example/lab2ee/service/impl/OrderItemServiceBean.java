@@ -37,6 +37,7 @@ public class OrderItemServiceBean implements OrderItemService {
             }
 
             item.setOrder(order);
+            item.setMenuItem(menuItem);
             orderItemDAO.save(item);
         }
     }

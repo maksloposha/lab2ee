@@ -13,14 +13,14 @@ import org.example.lab2ee.service.OrderService;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 @Stateless
 public class OrderServiceBean implements OrderService {
+    private static final Logger log = Logger.getLogger(OrderServiceBean.class.getName());
 
     @EJB private OrderDAO         orderDAO;
-
-
     @EJB private OrderItemService orderItemService;
 
     @Override
@@ -57,10 +57,7 @@ public class OrderServiceBean implements OrderService {
         order.setStatus(Order.Status.PENDING);
         order.setUser(user);
 
-        Order savedOrder = orderDAO.saveOrderOnly(order);
-        orderItemService.saveItems(savedOrder, order.getItems());
-
-        return savedOrder;
+        return orderDAO.saveOrderOnly(order);
     }
 
     @Override

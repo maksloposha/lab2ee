@@ -80,13 +80,10 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public Order saveOrderOnly(Order order) {
-        List<OrderItem> items = new ArrayList<>(order.getItems());
-        order.getItems().clear();
-
+        order.getItems().forEach(orderItem -> orderItem.setOrder(order));
         em.persist(order);
         em.flush();
 
-        order.setItems(items);
         return order;
     }
 
