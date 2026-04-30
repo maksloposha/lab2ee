@@ -63,10 +63,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public Order save(Order order) {
-        Connection con = null;
-        try {
-            con = ConnectionPool.getConnection();
-            con.setAutoCommit(false);
+        try (Connection con = ConnectionPool.getConnection()) {
 
             int orderId = insertOrder(con, order);
             order.setId(orderId);
@@ -75,21 +72,10 @@ public class OrderDAOImpl implements OrderDAO {
                 insertOrderItem(con, orderId, item);
             }
 
-            con.commit();
             return order;
 
         } catch (SQLException e) {
-            if (con != null) {
-                try { con.rollback(); } catch (SQLException ex) { /* ignore rollback error */ }
-            }
             throw new RuntimeException("Помилка при збереженні замовлення: " + e.getMessage(), e);
-        } finally {
-            if (con != null) {
-                try {
-                    con.setAutoCommit(true); // відновлюємо auto-commit
-                    con.close();             // повертаємо в пул
-                } catch (SQLException ex) { /* ignore */ }
-            }
         }
     }
 
@@ -186,10 +172,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    /**
-     * Пошук за іменем клієнта.
-     * ILIKE ? з параметром "%" + name + "%" — захист від SQL-ін'єкції.
-     */
     @Override
     public List<Order> findByCustomerName(String name) {
         try (Connection con = ConnectionPool.getConnection();
