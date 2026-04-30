@@ -57,7 +57,9 @@ public class OrderServiceBean implements OrderService {
         order.setStatus(Order.Status.PENDING);
         order.setUser(user);
 
-        return orderDAO.saveOrderOnly(order);
+        Order orderSaved = orderDAO.saveOrderOnly(order);
+        orderItemService.validateItems(orderSaved.getItems());
+        return orderSaved;
     }
 
     @Override

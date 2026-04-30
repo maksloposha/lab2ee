@@ -10,4 +10,6 @@ import java.util.List;
 public interface OrderItemService {
 
     void saveItems(Order order, List<OrderItem> items);
+    void validateItems(List<OrderItem> items);
+
 }

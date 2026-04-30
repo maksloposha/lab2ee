@@ -41,4 +41,20 @@ public class OrderItemServiceBean implements OrderItemService {
             orderItemDAO.save(item);
         }
     }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void validateItems(List<OrderItem> items) {
+        for (OrderItem item : items) {
+            MenuItem menuItem = menuItemDAO.findById(item.getMenuItem().getId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Страва з ID " + item.getMenuItem().getId() + " не знайдена"));
+
+            if (!menuItem.isAvailable()) {
+                throw new IllegalStateException(
+                        "Страва '" + menuItem.getName() + "' недоступна. " +
+                                "Транзакція відкотиться — замовлення не збережеться.");
+            }
+        }
+    }
 }
